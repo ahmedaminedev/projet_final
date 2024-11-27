@@ -1,0 +1,167 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-6">Page de Gestion des Produits</h1>
+
+  <!-- Affichage des détails de la page -->
+  <div *ngIf="page" class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Détails de la Page n° {{page.id}}</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li>
+        <strong class="font-medium">Fournisseur:</strong> {{ page.username || 'N/A' }}
+      </li>
+      <li>
+        <strong class="font-medium">Base URL:</strong> {{ page.base_url || 'N/A' }}
+      </li>
+      <li>
+        <strong class="font-medium">Nombre Max de Pages:</strong> {{ page.nombre_page_max || 'N/A' }}
+      </li>
+      <li>
+        <strong class="font-medium">Type:</strong> {{ page.Type || 'N/A' }}
+      </li>
+      <li>
+        <strong class="font-medium">État du Service:</strong> {{ page.etat_service || 'N/A' }}
+      </li>
+      <li>
+        <strong class="font-medium">Catégorie:</strong> {{ page.category || 'N/A' }}
+      </li>
+    </ul>
+    <button class="btn btn-secondary mb-4" (click)="deleteAllProducts()">Delete all products</button>
+
+  </div>
+
+
+
+<!-- Product Form Modal -->
+<div *ngIf="isFormVisible" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+  <div class="modal-dialog bg-white rounded-lg shadow-lg w-full max-w-lg">
+    <div class="modal-header flex justify-between p-4 border-b">
+      <h5 class="modal-title text-xl font-semibold">
+        {{ isEditMode ? 'Edit Product' : 'Add Product' }}
+      </h5>
+      <button type="button" class="text-gray-500 hover:text-gray-700" (click)="cancelEdit()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-4">
+      <form (ngSubmit)="submitForm()">
+        <div class="grid grid-cols-2 gap-4">
+
+          <!-- Nom du produit -->
+          <div class="form-group">
+            <label for="nom" class="form-label">Nom du Produit</label>
+            <input type="text" id="nom" [(ngModel)]="product.nom" name="nom" class="form-control" required />
+          </div>
+
+          <!-- Prix du produit -->
+          <div class="form-group">
+            <label for="prix" class="form-label">Prix (TND)</label>
+            <input type="number" id="prix" [(ngModel)]="product.prix" name="prix" class="form-control" required />
+          </div>
+
+          <!-- Prix régulier du produit -->
+          <div class="form-group">
+            <label for="prixRegulier" class="form-label">Prix Régulier (TND)</label>
+            <input type="number" id="prixRegulier" [(ngModel)]="product.prix_regulier" name="prixRegulier" class="form-control" />
+          </div>
+
+          <!-- Description du produit -->
+          <div class="form-group col-span-2">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" [(ngModel)]="product.description" name="description" class="form-control" rows="3" required></textarea>
+          </div>
+
+          <!-- Image du produit -->
+          <div class="form-group col-span-2">
+            <label for="image" class="form-label">Image (URL)</label>
+            <input type="text" id="image" [(ngModel)]="product.image" name="image" class="form-control" />
+          </div>
+
+        </div>
+
+        <div class="modal-footer flex justify-end p-4 border-t">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Enregistrer les modifications' : 'Ajouter' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <!-- Tableau des produits -->
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h3 class="text-2xl font-semibold mb-4">Liste des Produits</h3>
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Image</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">ID Produit</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Nom</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Prix_regulier</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Prix</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Description</th>
+          <th class="py-3 px-4 border-b text-center text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products" class="hover:bg-gray-50 relative">
+          <td class="py-2 px-4 border-b text-sm text-gray-800">
+            <img [src]="product.image" alt="{{ product.nom }}" class="product-image w-full h-full object-cover rounded">
+          </td>
+          <td class="py-2 px-4 border-b text-sm text-gray-800">{{ product.id }}</td>
+          <td class="py-2 px-4 border-b text-sm text-gray-800">{{ product.nom }}</td>
+          <td class="py-2 px-4 border-b text-sm text-gray-800">{{ product.prix_regulier }} TND</td>
+          <td class="py-2 px-4 border-b text-sm text-gray-800">{{ product.prix }} TND</td>
+          <td class="py-2 px-4 border-b text-sm text-gray-800">{{ product.description }}</td>
+          <td class="py-2 px-4 border-b text-center">
+            <!-- Menu d'actions -->
+            <div class="relative inline-block text-left">
+              <button
+                (click)="toggleActionsMenu(product)"
+                class="btn btn-menu mx-1 icon-button"
+                [ngClass]="{'active': isMenuOpen(product)}"
+                title="More Actions">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+
+<!-- Actions Menu -->
+<div *ngIf="isMenuOpen(product)" class="actions-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+  <ul class="py-1">
+    <li>
+      <button (click)="openForm(product)" class="btn-action">
+        <i class="bi bi-pencil-fill"></i>
+        <span class="tooltip-content">
+          <strong>Edit Product</strong><br />
+          Modifier les informations du produit.<br />
+          Cliquez pour plus d'informations.
+        </span>
+      </button>
+    </li>
+    <li>
+      <button (click)="deleteProduct(product.id,product.nom)" class="btn-action">
+        <i class="bi bi-trash"></i>
+        <span class="tooltip-content">
+          <strong>Delete Product</strong><br />
+          Supprime définitivement ce produit.<br />
+          Cette action est irréversible.
+        </span>
+      </button>
+    </li>
+  </ul>
+</div>
+
+
+
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucun produit n'est trouvé -->
+  <div *ngIf="products && products.length === 0" class="mt-6 text-center text-gray-600">
+    <p>Aucun produit trouvé pour cette page.</p>
+  </div>
+</div>

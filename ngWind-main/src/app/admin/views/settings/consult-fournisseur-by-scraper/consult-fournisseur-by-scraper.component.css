@@ -1,0 +1,27 @@
+/* consult-fournisseur-by-scraper.component.css */
+
+.ng-wind-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ng-wind-table-header {
+  background-color: #f1f1f1;
+}
+
+.ng-wind-header-item {
+  padding: 10px;
+  text-align: left;
+}
+
+.ng-wind-data-item {
+  padding: 10px;
+  text-align: center; /* Centre le texte et les éléments horizontalement */
+}
+
+.status-circle {
+  width: 20px; /* Taille du cercle */
+  height: 20px; /* Taille du cercle */
+  border-radius: 50%; /* Forme circulaire */
+  display: inline-block;
+}

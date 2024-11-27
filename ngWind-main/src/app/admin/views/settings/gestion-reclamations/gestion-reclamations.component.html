@@ -1,0 +1,198 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-6">Gestion des Réclamations</h1>
+  <!-- Tableau des réclamations -->
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <h3 class="text-2xl font-semibold mb-4">Liste des Réclamations</h3>
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">ID</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Titre</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Description</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">État</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Origine</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Date</th>
+          <th class="py-3 px-4 border-b text-left text-sm font-medium text-gray-600">Responsable</th>
+          <th class="py-3 px-4 border-b text-center text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reclamation of reclamations" class="hover:bg-gray-50">
+          <td class="py-2 px-4 border-b">{{ reclamation.id }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.titre }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.description }}</td>
+          <td class="py-2 px-4 border-b">
+            <span [ngClass]="getEtatClass(reclamation.etat)" class="px-2 py-1 rounded-full text-xs font-semibold">
+              {{ reclamation.etat }}
+            </span>
+          </td>
+          <td class="py-2 px-4 border-b">{{ reclamation.username }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.date | date:'short' }}</td>
+          <td class="py-2 px-4 border-b">
+            <span *ngIf="reclamation.usernamescraper; else noScraper">
+              {{ reclamation.usernamescraper }}
+            </span>
+            <ng-template #noScraper>
+              Pas de Responsable
+            </ng-template>
+          </td>
+          <td class="py-2 px-4 border-b text-center">
+            <div class="relative inline-block text-left">
+              <button (click)="toggleActionsMenu(reclamation)" class="btn btn-menu mx-1 icon-button"
+                [ngClass]="{'active': isMenuOpen(reclamation)}" title="Plus d'actions">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+
+              <!-- Actions Menu -->
+              <div *ngIf="isMenuOpen(reclamation)"
+                class="actions-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <ul class="py-1">
+                  <li>
+                    <button (click)="viewDetails(reclamation)" class="btn-action">
+                      <i class="bi bi-eye-fill"></i>
+                      <span class="tooltip-content">
+                        <strong>Détails</strong><br />
+                        Voir les informations de la réclamation.<br />
+                        Cliquez pour plus d'informations.
+                      </span>
+                    </button>
+                  </li>
+                  <li *ngIf="reclamation.etat !== 'TRAITEE'">
+                    <button (click)="validateReclamation(reclamation)" class="btn-action" [disabled]="reclamation.etat === 'TRAITEE'">
+                      <i class="bi bi-check-circle-fill"></i>
+                      <span class="tooltip-content">
+                        <strong>Valider</strong><br />
+                        Valider la réclamation si elle est terminée.<br />
+                        Cette action est irréversible.
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="deleteReclamation(reclamation.id)" class="btn-action">
+                      <i class="bi bi-trash-fill"></i>
+                      <span class="tooltip-content">
+                        <strong>Supprimer</strong><br />
+                        Supprimer définitivement cette réclamation.<br />
+                        Cette action est irréversible.
+                      </span>
+                    </button>
+                  </li>
+                  <li  *ngIf="reclamation.etat !== 'TRAITEE' && isLoggedIn() &&  isRole('ADMIN')">
+                    <button (click)="openAssignScraperModal(reclamation)" class="btn-action">
+                      <i class="bi bi-person-plus-fill"></i>
+                      <span class="tooltip-content">
+                        <strong>Assigner</strong><br />
+                        Affecter un scraper à cette réclamation pour la traiter.<br />
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<!-- Modals -->
+<ng-container *ngIf="reclamationToAssign">
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center overflow-y-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full mt-7 mb-4 max-h-[90vh] overflow-y-auto">
+      <!-- Section for Reclamation Information -->
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold mb-4">Assigner un Scraper à la Réclamation</h2>
+        <div class="border border-gray-300 rounded-lg p-4">
+          <h3 class="text-lg font-semibold">Informations sur la Réclamation</h3>
+          <p class="mt-2">
+            <strong class="text-gray-700">Titre :</strong> {{ reclamationToAssign.titre }}
+          </p>
+          <p class="mt-2">
+            <strong class="text-gray-700">Scraper assigné :</strong>
+            {{ reclamationToAssign.usernamescraper || 'Pas de Responsable' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Section for List of Scrapers -->
+      <div>
+        <h3 class="text-lg font-semibold mb-2">Choisir un Scraper :</h3>
+        <div *ngFor="let scraper of scrapers" class="border border-gray-300 rounded-lg p-4 mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <p class="font-bold text-gray-800">username : {{ scraper.username }}</p>
+            <button class="btn btn-primary" (click)="assignScraper(reclamationToAssign.id, scraper.id)">
+              Assigner
+            </button>
+          </div>
+          <!-- Dernière Page Scraper Section -->
+          <div class="mb-4">
+            <h4 class="text-md font-semibold mb-2">Dernière Page Scraper :</h4>
+            <ng-container *ngIf="scraper.pages.length > 0; else noPagesTemplate">
+              <ul class="space-y-2">
+                <li *ngFor="let page of scraper.pages" class="border-t border-gray-200 pt-2">
+                  <div class="flex items-center">
+                    <span class="font-medium text-gray-600">Page : {{ page.id }}</span>
+                    <span class="mx-2 text-gray-400">-</span>
+                    <span class="text-gray-600">{{ page.base_url }}</span>
+                    <span class="mx-2 text-gray-400">-</span>
+                    <span class="text-gray-600">
+                      {{ page.date_dernier_scraping ? (page.date_dernier_scraping | date:'short') : (page.date_creation | date:'short') }}
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </ng-container>
+            <ng-template #noPagesTemplate>
+              <p class="text-gray-600">Aucune page disponible pour ce scraper.</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Close Button -->
+      <div class="mt-6 flex justify-end">
+        <button class="btn btn-secondary" (click)="closeAssignScraperModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+  <ng-container *ngIf="selectedReclamation">
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-4">{{ selectedReclamation.titre }}</h2>
+        <div class="flex flex-col lg:flex-row lg:space-x-4">
+          <div class="flex-1">
+            <img *ngIf="image$ | async as imageUrl" [src]="imageUrl" alt="Image de la réclamation" class="w-full h-auto mb-4 lg:mb-0 lg:w-1/2 lg:h-auto">
+          </div>
+          <div class="flex-1">
+            <p><strong>ID:</strong> {{ selectedReclamation.id }}</p>
+            <p><strong>Description:</strong> {{ selectedReclamation.description }}</p>
+            <p><strong>État:</strong> {{ selectedReclamation.etat }}</p>
+            <p><strong>Date:</strong> {{ selectedReclamation.date | date }}</p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button class="btn btn-secondary mr-2" (click)="closeModal()">Fermer</button>
+          <button class="btn btn-danger" (click)="deleteReclamation(selectedReclamation.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Image Modal -->
+  <ng-container *ngIf="imageModalOpen">
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
+        <img [src]="currentImage" alt="Image de la réclamation" class="w-full h-auto">
+        <div class="mt-6 flex justify-end">
+          <button class="btn btn-secondary" (click)="closeImageModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

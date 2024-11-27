@@ -1,0 +1,127 @@
+.admin-navbar {
+  z-index: 10;
+}
+
+.profile-dropdown-list {
+  @apply absolute top-9 -right-3 mt-2 flex w-60 flex-col gap-3 rounded-xl bg-slate-100 border border-slate-500/30 p-4 shadow-lg transition ease-in-out duration-150;
+  z-index: 20; /* Assurez-vous que le menu profil est au-dessus de tout autre contenu */
+}
+
+.profile-dropdown-list[aria-expanded='false'] {
+  @apply invisible scale-90 opacity-0;
+}
+
+.profile-dropdown-list[aria-expanded='true'] {
+  @apply visible scale-100 opacity-100;
+}
+
+.profile-dropdown .text-xs {
+  word-wrap: break-word; /* Break the word if it's too long */
+  word-break: break-all; /* Allows breaking within the word */
+  white-space: normal; /* Allows wrapping to the next line */
+  overflow-wrap: break-word; /* Ensure long words break and wrap */
+  display: block; /* Ensure the element takes full width for proper wrapping */
+  max-width: 100%; /* Ensures the text doesn't exceed the container's width */
+}
+
+/* Compteur de notifications */
+.notification-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #808080;
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu des notifications */
+.notifications-menu {
+  width: 330px;
+  max-height: 400px;
+  overflow-y: auto;
+  opacity: 0;
+  position: absolute;
+  top: 100%; /* Position plus basse pour éviter l'encombrement */
+  right: 50px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 10; /* z-index inférieur à celui du menu profil */
+  transform: translateY(-10px); /* Effet de montée */
+  pointer-events: none; /* Désactiver les événements de clic lorsque le menu est masqué */
+}
+
+.notifications-menu.visible {
+  opacity: 1;
+  transform: translateY(0); /* Affiche progressivement le menu */
+  pointer-events: auto; /* Activer les événements de clic lorsque le menu est visible */
+}
+
+/* Titre des notifications */
+.notifications-menu h2 {
+  margin: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Item de notification */
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f1f1f1;
+  background-color: #f3f3f3;
+  transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+  background-color: #f0f8ff; /* Légère teinte bleue au survol */
+}
+
+.notification-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #2c3e50;
+  word-break: break-all; /* Force la rupture de mot si nécessaire */
+}
+
+.notification-date {
+  font-size: 11px;
+  color: #bdc3c7;
+  margin-top: 5px;
+}
+
+/* Aucun élément de notification */
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #bdc3c7;
+  background-color: #f9f9f9;
+}

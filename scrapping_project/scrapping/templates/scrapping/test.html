@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scraping Progress</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+</head>
+<body>
+    <h1>Scraping Progress</h1>
+    <!-- Conteneur pour afficher les progressions -->
+    <div id="progress-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const socket = io('http://localhost:5000/');
+
+            socket.on('progress', function(data) {
+                console.log(data);
+                
+                // Vérifiez que data est défini et qu'il contient page_id et progress
+                if (data && data.page_id !== undefined && data.progress !== undefined) {
+                    updateUI(data.page_id, data.progress);
+                } else {
+                    console.error('Received invalid data:', data);
+                }
+            });
+
+            function updateUI(page_id, progress) {
+                let progressElement = document.getElementById(`progress-${page_id}`);
+                if (!progressElement) {
+                    // Crée un nouvel élément <p> si celui pour cette page n'existe pas
+                    progressElement = document.createElement('p');
+                    progressElement.id = `progress-${page_id}`;
+                    document.getElementById('progress-container').appendChild(progressElement);
+                }
+                // Met à jour le texte de l'élément avec l'identifiant et la progression
+                progressElement.innerText = `Page ${page_id} Progress: ${progress.toFixed(2)}%`;
+            }
+        });
+    </script>
+</body>
+</html>

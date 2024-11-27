@@ -1,0 +1,128 @@
+<div class="main-container">
+  <div class="calendar-form-container">
+    <div class="calendar-container">
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <div class="header-left">
+          <button class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            &#x25C0; Previous
+          </button>
+          <button class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+            Today
+          </button>
+          <button class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            Next &#x25B6;
+          </button>
+        </div>
+
+        <h2 class="header-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+
+        <div class="header-right">
+          <button class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+            Month
+          </button>
+          <button class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+            Week
+          </button>
+          <button class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+            Day
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar View -->
+      <div class="calendar-view">
+        <ng-container [ngSwitch]="view">
+          <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          ></mwl-calendar-month-view>
+
+          <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          ></mwl-calendar-week-view>
+
+          <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          ></mwl-calendar-day-view>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <div class="form-header">
+        <h3 class="form-title">Configuration Page: {{ pageId }}</h3>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+          {{ editConfiguration ? 'Edit Configuration' : 'Add Configuration' }}
+        </button>
+      </div>
+      <form [formGroup]="configurationForm">
+        <div class="form-group">
+          <label for="frequency">Frequency</label>
+          <select id="frequency" formControlName="frequency" class="form-control" (change)="onFrequencyChange($event)">
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+          </select>
+        </div>
+
+        <div *ngIf="selectedFrequency === 'WEEKLY'" class="form-group">
+          <label for="dayOfWeek">Day of the Week</label>
+          <select id="dayOfWeek" formControlName="dayOfWeek" class="form-control">
+            <option *ngFor="let day of daysOfWeekOptions" [value]="day.value">{{ day.display }}</option>
+          </select>
+        </div>
+
+        <div *ngIf="selectedFrequency === 'MONTHLY'" class="form-group">
+          <label for="day">Day of the Month</label>
+          <input type="number" id="day" formControlName="day" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="hour">Hour</label>
+          <select id="hour" formControlName="hour" class="form-control">
+            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="minute">Minute</label>
+          <select id="minute" formControlName="minute" class="form-control">
+            <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="jobs-list-container">
+    <div class="jobs-list" *ngIf="jobs.length">
+      <h3 class="text-lg font-semibold">Jobs en cours</h3>
+      <div *ngFor="let job of jobs" [ngClass]="{'job-for-page': job.args[0] === pageId, 'other-job': job.args[0] !== pageId}" class="job-item">
+        <button class="btn-delete" (click)="onDeleteJob(job.configuration.id)"><i class="bi bi-trash"></i></button>
+        <p><strong>Page : {{ job.args[0] }}</strong></p>
+        <p><strong>Frequence : {{ job.configuration.frequency }}</strong></p>
+        <p><strong>Premiere Exécution :</strong> {{ job.configuration.hour}}:{{job.configuration.minute}}</p>
+        <p><strong>Prochaine Exécution :</strong> {{ job.next_run_time }}</p>
+      </div>
+    </div>
+    <div *ngIf="!jobs.length" class="jobs-list">
+      <p>Aucun job en cours.</p>
+    </div>
+  </div>
+</div>

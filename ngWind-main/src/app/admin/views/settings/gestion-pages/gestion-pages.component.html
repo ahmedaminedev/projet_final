@@ -1,0 +1,332 @@
+<div [@pageTransition] class="p-5">
+
+  <!-- Title and Add Page Button -->
+  <h2 class="text-2xl font-bold mb-4">Gestion des Pages</h2>
+  <button (click)="openForm()" class="btn btn-primary mb-4">Add Page</button>
+
+  <!-- Table of Pages -->
+  <div class=" bg-white rounded-lg shadow-md">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-2 px-4 border-b">Numero</th>
+          <th class="py-2 px-4 border-b">Fournisseur</th>
+          <th class="py-2 px-4 border-b">Progression</th>
+          <th class="py-2 px-4 border-b">Base URL</th>
+          <th class="py-2 px-4 border-b">Page Suffix</th>
+          <th class="py-2 px-4 border-b">Max Page Number</th>
+          <th class="py-2 px-4 border-b">Type</th>
+          <th class="py-2 px-4 border-b">produits</th>
+          <th class="py-2 px-4 border-b">Etat Service</th>
+          <th class="py-2 px-4 border-b">Catégorie</th>
+          <th class="py-2 px-4 border-b text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let page of rowData" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ page.id }}</td>
+          <td class="py-2 px-4 border-b">{{ page.username }}</td>
+
+
+
+          <td class="py-2 px-4 border-b progres-cell">
+            <div *ngIf="scrapingProgress[page.id] !== undefined">
+              <div class="relative flex items-center">
+                <!-- Progress Bar Container -->
+                <div class="progress-bar-bg w-full">
+                  <!-- Progress Bar -->
+                  <div class="progress-bar" [ngStyle]="{'width': scrapingProgress[page.id] + '%'}"></div>
+
+                  <!-- Percentage Text -->
+                  <span class="progress-bar-text">{{ scrapingProgress[page.id].toFixed(2) }}%</span>
+
+                  <!-- Cancel Icon -->
+                  <button *ngIf="scrapingProgress[page.id] > 0"
+                          (click)="cancelScraping(page)"
+                          class="progress-bar-cancel">
+                    <i class="bi bi-x-circle"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="scrapingProgress[page.id] === undefined">
+              <span>No Progress</span>
+            </div>
+          </td>
+
+
+          <td class="py-2 px-4 border-b url-cell">
+            <span class="url-text">{{ page.base_url }}</span>
+            <span class="custom-tooltip">{{ page.base_url }}</span>
+          </td>
+
+          <td class="py-2 px-4 border-b">{{ page.page_suffix }}</td>
+          <td class="py-2 px-4 border-b">{{ page.nombre_page_max }}</td>
+          <td class="py-2 px-4 border-b">{{ page.Type }}</td>
+          <td class="py-2 px-4 border-b">
+            <button *ngIf="isButtonVisible(page.id)" class="btn btn-primary mb-4"
+                    [routerLink]="['/admin/settings/gestionproducts/page', page.id]"
+                    routerLinkActive="router-link-active">
+              Consulter
+            </button>
+          </td>
+
+
+
+          <td class="py-2 px-4 border-b">
+            <div [ngClass]="getEtatServiceClass(page.etat_service)" class="status-circle"></div>
+          </td>
+          <td class="py-2 px-4 border-b">{{ page.categoryHierarchy || 'N/A' }}</td>
+          <td class="py-2 px-4 border-b text-center">
+            <!-- Menu Icon -->
+            <div class="relative">
+              <button
+              (click)="toggleActions(page)"
+              class="btn btn-menu mx-1 icon-button"
+              [ngClass]="{'active': isActive(page) && showActions}"
+              title="More Actions"
+            >
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+
+
+              <!-- Actions Menu -->
+              <div *ngIf="activePage === page && showActions" class="actions-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <ul class="py-1">
+                  <li>
+                    <button (click)="deletePage(page)" class="btn-action">
+                      <i class="bi bi-trash"></i>
+                      <span class="tooltip-content">
+                        <strong>Delete Page</strong><br />
+                        Supprime définitivement cette page.<br />
+                        Cette action est irréversible.
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="startScraping(page)" class="btn-action">
+                      <i class="bi bi-play-circle"></i>
+                      <span class="tooltip-content">
+                        <strong>Start Scraping</strong><br />
+                        Démarre le processus de scraping.<br />
+                        Veuillez confirmer l'action.
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="viewDetails(page)" class="btn-action">
+                      <i class="bi bi-info-circle"></i>
+                      <span class="tooltip-content">
+                        <strong>View Details</strong><br />
+                        Affiche les détails de cette page.<br />
+                        Cliquez pour plus d'informations.
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="openForm(page)" class="btn-action">
+                      <i class="bi bi-pencil-fill"></i>
+                      <span class="tooltip-content">
+                        <strong>Edit Page</strong><br />
+                        Modifier les information de la page.<br />
+                        Cliquez pour plus d'informations.
+                      </span>
+                    </button>
+                  </li>
+                  <li *ngIf="page.etat_service === 'TERMINER'">
+                    <button (click)="addConfiguration(page)" class="btn-action">
+                      <i class="bi bi-gear"></i>
+                      <span class="tooltip-content">
+                        <strong>Schedule</strong><br />
+                        Ajoute une nouvelle configuration.<br />
+                        Assurez-vous que tout est correct.
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button (click)="togglePageStatus(page)" class="btn-action">
+                      <i class="bi" [ngClass]="{'bi-toggle-off': page.etat_service === 'EN_ATTENTE', 'bi-toggle-on': page.etat_service !== 'EN_ATTENTE'}"></i>
+                      <span class="tooltip-content">
+                        <strong>{{ page.etat_service === 'EN_ATTENTE' ? 'Finish' : 'Put on Hold' }}</strong><br />
+                        Change l'état du service.<br />
+                        Action réversible.
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<!-- Page Form Modal -->
+<div *ngIf="isFormVisible" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+  <div class="modal-dialog bg-white rounded-lg shadow-lg w-full max-w-lg">
+    <div class="modal-header flex justify-between p-4 border-b">
+      <h5 class="modal-title text-xl font-semibold">
+        {{ isEditMode ? 'Edit Page' : 'Add Page' }}
+      </h5>
+      <button type="button" class="text-gray-500 hover:text-gray-700" (click)="cancelEdit()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-4">
+      <form (ngSubmit)="submitForm()">
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Fournisseur (non modifiable en mode édition) -->
+          <div class="form-group">
+            <label for="fournisseur" class="form-label">Fournisseur</label>
+            <select id="fournisseur" [(ngModel)]="page.id_fournisseur" name="id_fournisseur" required class="form-control" [disabled]="isEditMode">
+              <option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">
+                {{ fournisseur.username }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Base URL -->
+          <div class="form-group">
+            <label for="baseUrl" class="form-label">Base URL</label>
+            <input type="text" id="baseUrl" [(ngModel)]="page.base_url" name="baseUrl" class="form-control" required />
+          </div>
+
+          <!-- Page Suffix -->
+          <div class="form-group">
+            <label for="pageSuffix" class="form-label">Page Suffix</label>
+            <input type="text" id="pageSuffix" [(ngModel)]="page.page_suffix" name="pageSuffix" class="form-control" />
+          </div>
+
+          <!-- Max Page Number -->
+          <div class="form-group">
+            <label for="numMaxPage" class="form-label">Max Page Number</label>
+            <input type="number" id="numMaxPage" [(ngModel)]="page.nombre_page_max" name="nombre_page_max" class="form-control" />
+          </div>
+
+          <!-- Type -->
+          <div class="form-group">
+            <label for="type" class="form-label">Type</label>
+            <select id="type" [(ngModel)]="page.Type" name="Type" class="form-control">
+              <option value="Avec_pagination">Avec Pagination</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Catégorie (non modifiable en mode édition) -->
+          <div *ngIf="!isEditMode "ng class="form-group">
+            <label for="categorie" class="form-label">Catégorie</label>
+            <select id="categorie" [(ngModel)]="page.category" name="category" class="form-control" (change)="onCategoryChange($event)">
+              <option *ngFor="let categorie of parent_categorie" [value]="categorie.id">{{ categorie.name }}</option>
+            </select>
+          </div>
+
+          <!-- Sous-Catégorie (non modifiable en mode édition) -->
+          <div *ngIf=" !isEditMode && subCategories.length > 0" class="form-group">
+            <label for="sousCategorie" class="form-label">Sous-Catégorie</label>
+            <select id="sousCategorie" [(ngModel)]="selectedSubCategoryId" name="subCategories" class="form-control" (change)="onSubCategoryChange($event)">
+              <option *ngFor="let subCategorie of subCategories" [value]="subCategorie.id">{{ subCategorie.name }}</option>
+            </select>
+          </div>
+        </div>
+    <!-- Hiérarchie des Catégories (uniquement en mode édition) -->
+    <div *ngIf="isEditMode && page.categoryHierarchy" class="form-group">
+      <label>Hiérarchie des Catégories</label>
+      <p>{{ page.categoryHierarchy | json }}</p>
+    </div>
+        <div class="modal-footer flex justify-end p-4 border-t">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Enregistrer les modifications' : 'Ajouter' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Détails de la Page -->
+<div *ngIf="selectedPage" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+  <div class="modal-dialog bg-white rounded-lg shadow-lg w-full max-w-lg p-4">
+
+    <!-- En-tête de la modal -->
+    <div class="modal-header flex justify-between p-4 border-b">
+      <h5 class="modal-title text-xl font-semibold">Détails de la Page n° {{selectedPage.id}}</h5>
+      <button type="button" class="text-gray-500 hover:text-gray-700" (click)="closeDetails()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- Corps de la modal -->
+    <div class="modal-body p-6 bg-gray-50 rounded-lg">
+      <div class="grid grid-cols-2 gap-4">
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-person-circle text-blue-500"></i>
+          <p><strong>Fournisseur :</strong> {{ selectedPage.username }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-link text-green-500"></i>
+          <p><strong>Base URL :</strong> {{ selectedPage.base_url }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-tag-fill text-yellow-500"></i>
+          <p><strong>Catégorie :</strong> {{ selectedPage.category?.name || 'N/A' }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-file-earmark-code-fill text-red-500"></i>
+          <p><strong>Page Suffix :</strong> {{ selectedPage.page_suffix }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-layers text-purple-500"></i>
+          <p><strong>Nombre de Pages Max :</strong> {{ selectedPage.nombre_page_max }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-layout-text-window-reverse text-pink-500"></i>
+          <p><strong>Type :</strong> {{ selectedPage.Type }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-person-fill text-indigo-500"></i>
+          <p><strong>Username Scraper :</strong> {{ selectedPage.username_scraper }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-calendar-date text-teal-500"></i>
+          <p><strong>Date Création :</strong> {{ selectedPage.date_creation | date:'medium' }}</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="bi bi-calendar-check text-orange-500"></i>
+          <p><strong>Date Dernier Scraping :</strong>
+            {{ selectedPage.date_dernier_scraping ? (selectedPage.date_dernier_scraping | date:'medium') : 'N/A' }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pied de la modal -->
+    <div class="modal-footer flex justify-end p-4 border-t bg-gray-100 rounded-b-lg">
+      <button type="button" class="btn btn-primary" (click)="closeDetails()">Fermer</button>
+    </div>
+
+  </div>
+</div>
+
+
+  <div *ngIf="isCalendarVisible" class="modal-overlay fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+    <button type="button" class="absolute top-2 right-2 text-white hover:text-gray-400 text-2xl" (click)="closeCalendar()">
+      <i class="bi bi-x-circle"></i>
+    </button>
+    <app-calendar-modal [jobs]="jobs" [pageId]="pageId"></app-calendar-modal>
+  </div>
+
+
+
+</div>

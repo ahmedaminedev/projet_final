@@ -1,0 +1,92 @@
+<!-- Top Navigation Bar -->
+<header class="top-navbar">
+  <div class="container">
+    <div class="navbar-left">
+      <a href="#" class="logo">
+        <span class="logo-primary">Bon</span>
+        <span class="logo-secondary">Plan</span>
+      </a>
+    </div>
+    <div class="navbar-center">
+      <form class="search-form" (ngSubmit)="onSearch(searchInput.value)">
+        <input #searchInput type="text" [(ngModel)]="searchString" name="search" placeholder="Search...">
+        <button type="submit">Search</button>
+      </form>
+
+    </div>
+    <div class="navbar-right">
+      <p class="customer-service">Customer Service</p>
+      <h5 class="phone-number">+012 345 6789</h5>
+    </div>
+  </div>
+</header>
+
+<!-- Main Navigation Bar -->
+<nav class="main-navbar">
+  <div class="container">
+    <div class="navbar-left">
+      <button class="categories-btn" (click)="toggleCategories()">
+        <i class="bi bi-list icon-right"></i> Categories
+        <i class="bi bi-chevron-down icon-left"></i>
+      </button>
+      <div id="categories-menu" class="categories-menu" [ngClass]="{ 'visible': categoriesVisible }">
+        <div *ngFor="let category of categories" (click)="toggleCategory(category)">
+          {{ category.categorie }}<i class="bi bi-chevron-right icon-left"></i>
+          <div class="subcategories-menu" [ngClass]="{ 'visible': category === selectedCategory }">
+            <div *ngFor="let subcategory of category.subcategories" (click)="navigateToCategory(subcategory._id)">
+              {{ subcategory.categorie }}<i class="bi bi-chevron-right icon-left"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar-center">
+      <a href="#" class="nav-link">Home</a>
+      <a *ngIf="isLoggedIn()" [routerLink]="['/magicsearch']" class="nav-link">magic-search</a>
+
+
+      <a *ngIf="isLoggedIn() && isRole('FOURNISSEUR')" (click)="navigateTo('stats-fournisseur')" [routerLink]="['/contact']" class="nav-link">Stats</a>
+
+
+      <a *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('FOURNISSEUR'))" [routerLink]="['/contact']" class="nav-link">Contact</a>
+
+    </div>
+    <div class="navbar-right">
+      <button *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('FOURNISSEUR'))" class="notification-btn" (click)="toggleNotifications()">
+        <i class="bi bi-bell-fill"></i>
+        <span *ngIf="notificationsCount > 0" class="notification-count">{{ notificationsCount }}</span>
+      </button>
+
+      <!-- Notification Box -->
+      <div id="notifications-menu" class="notifications-menu" [ngClass]="{ 'visible': notificationsVisible }">
+        <div *ngIf="notifications.length === 0" class="no-notifications">No notifications</div>
+        <div *ngFor="let notification of notifications" class="notification-item">
+          <img src="assets/e-shop/img/avatar2.png" alt="avatar" class="notification-avatar">
+          <div class="notification-text">
+            <h4>{{ notification.message }}</h4>
+            <p class="notification-date">{{ notification.date | date:'short' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button *ngIf="isLoggedIn() && isRole('CLIENT')" [routerLink]="['/favories']" class="favorites-btn">
+        <i class="bi bi-heart-fill"></i>
+        <span *ngIf="favoritesCount > 0" class="favorites-count">{{ favoritesCount }}</span>
+      </button>
+
+      <button *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('ADMIN') || isRole('SCRAPPER') || isRole('FOURNISSEUR'))" class="profile-btn" (click)="toggleProfileMenu()">
+        <i class="bi bi-person-fill"></i>
+        <i class="bi bi-caret-down-fill"></i>
+      </button>
+      <div id="profile-menu" class="profile-menu" [ngClass]="{ 'visible': profileMenuVisible }">
+        <div *ngIf="isLoggedIn() && ( isRole('ADMIN') || isRole('SCRAPPER'))" (click)="navigateTo('/admin/dashboard')"> Dashboard <i class="bi bi-person-circle"></i></div>
+        <div *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('FOURNISSEUR'))" (click)="navigateTo('profile')"> My Account <i class="bi bi-person-circle"></i></div>
+        <div *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('ADMIN') || isRole('SCRAPPER') || isRole('FOURNISSEUR'))" (click)="logout()"> Logout <i class="bi bi-box-arrow-right"></i></div>
+
+      </div>
+
+      <!-- Utilisateur non connecté : afficher le bouton "Login" -->
+      <button *ngIf="!isLoggedIn()" class="login-btn" (click)="navigateTo('login')">Login</button>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,59 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal-dialog {
+  max-width: 600px; /* Increased width for better two-column layout */
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 0.3rem;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  outline: 0;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.modal-body {
+  position: relative;
+  padding: 1rem;
+}
+.button-spacing {
+  margin-left: 10px; /* Ajustez la valeur selon vos besoins */
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  border-top: 1px solid #e9ecef;
+  border-bottom-right-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem; /* Space between form fields */
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr); /* Two-column layout */
+}

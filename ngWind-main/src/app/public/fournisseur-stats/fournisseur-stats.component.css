@@ -1,0 +1,39 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column; /* Align charts vertically */
+  gap: 20px; /* Espacement entre les sections */
+  margin: 20px; /* Ajouter de la marge autour de la conteneur */
+}
+
+.chart-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  transition: transform 0.2s; /* Transition pour effet de survol */
+}
+
+.chart-card:hover {
+  transform: scale(1.02); /* Effet de zoom sur survol */
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px; /* Ajustez la hauteur pour une meilleure visibilité */
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center; /* Centrer les cartes dans le carrousel */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #f7bd5e; /* Personnaliser les icônes */
+}

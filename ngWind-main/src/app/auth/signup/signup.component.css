@@ -1,0 +1,161 @@
+.home {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-image: url("/assets/images/b.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.home.show::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.5s ease-out;
+}
+
+.form_container {
+  display: flex;
+  position: fixed;
+  max-width: 900px;
+  width: 80%;
+  height: 525px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease-out;
+}
+
+.home.show .form_container {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.form_content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.form_image {
+  width: 400px;
+  height: 100%;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
+}
+
+.form_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form_close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #0b0217;
+  font-size: 22px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.form_container h2 {
+  font-size: 22px;
+  color: #0b0217;
+  text-align: center;
+}
+
+.input_box {
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
+}
+
+.input_box input,
+.input_box select {
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0 30px;
+  color: #333;
+  border-bottom: 1.5px solid #aaaaaa;
+  transition: all 0.2s ease;
+}
+
+.input_box input:focus,
+.input_box select:focus {
+  border-color: #f39c12;
+}
+
+.input_box i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #707070;
+}
+
+.input_box i.email,
+.input_box i.password,
+.input_box i.phone,
+.input_box i.map-marker,
+.input_box i.user-tag,
+.input_box i.globe {
+  left: 0;
+}
+
+.button {
+  background: #f39c12;
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
+
+.login_signup {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.login_signup a {
+  color: #f39c12;
+}
+
+.login_signup a:hover {
+  text-decoration: underline;
+}
+.grid_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid_item {
+  width: 100%;
+}
+
+.input_box select {
+  width: 100%;
+  padding: 8px;
+}

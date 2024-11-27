@@ -1,0 +1,353 @@
+/* gestion-pages.component.css */
+
+/* gestion-pages.component.css */
+
+/* Table Styles */
+table {
+  width: 100%; /* Utilise toute la largeur disponible */
+  margin: 0 auto; /* Centre le tableau */
+  border-collapse: collapse;
+  background-color: #fff;
+  font-size: 14px; /* Réduit légèrement la taille de la police */
+}
+
+/* Assurez-vous que les cellules s'ajustent à la largeur disponible */
+th, td {
+  padding: 8px 10px; /* Réduit le padding pour diminuer la taille globale */
+  border: 1px solid #ddd;
+  text-align: center; /* Centre le texte dans les cellules */
+  word-wrap: break-word; /* Permet aux mots longs de se casser et de s'ajuster */
+}
+
+/* Styles des en-têtes de colonnes */
+th {
+  background-color: #f4f4f4;
+}
+
+/* Styles pour les lignes paires du tableau */
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Styles au survol des lignes du tableau */
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+/* Button Styles */
+.btn {
+  padding: 6px 10px; /* Réduit la taille du padding pour les boutons */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px; /* Réduit la taille de la police des boutons */
+  transition: background-color 0.3s ease;
+  margin: 2px; /* Ajoute un petit espace entre les boutons */
+}
+
+/* Styles pour chaque bouton spécifique */
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-edit { background-color: #007bff; color: white; }
+.btn-edit:hover { background-color: #0056b3; }
+.btn-delete { background-color: #dc3545; color: white; }
+.btn-delete:hover { background-color: #c82333; }
+.btn-config { background-color: #28a745; color: white; }
+.btn-config:hover { background-color: #218838; }
+.btn-scrape { background-color: #ff8000; color: white; }
+.btn-scrape:hover { background-color: #e67e00; }
+.btn-detail { background-color: #17a2b8; color: white; }
+.btn-detail:hover { background-color: #138496; }
+
+/* Status Circle */
+.status-circle {
+  width: 18px; /* Réduit la taille des cercles de statut */
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bg-yellow-400 { background-color: #ff8000; }
+.bg-blue-400 { background-color: #60a5fa; }
+.bg-green-400 { background-color: #34d399; }
+.bg-gray-400 { background-color: #d1d5db; }
+
+/* Modal Styles */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+/* Style pour les longs textes dans la modal */
+.modal-body p {
+  overflow-wrap: break-word; /* Permet aux mots longs de revenir à la ligne */
+  word-break: break-word; /* Coupe les mots longs qui ne peuvent pas tenir sur une seule ligne */
+}
+
+/* Assurez-vous que le texte dans les cellules ne dépasse pas */
+.modal-body {
+  overflow: auto; /* Ajoute un défilement si nécessaire */
+}
+
+
+
+
+
+/* Progress Bar Container */
+.progress-bar-bg {
+  position: relative;
+  height: 27px; /* Hauteur de la barre de progression */
+  background-color: #e0e0e0; /* Couleur de fond de la barre de progression */
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50; /* Couleur de la barre de progression */
+  border-radius: 0.5rem;
+  transition: width 0.5s ease;
+  position: absolute; /* Position absolue pour la barre en mouvement */
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/* Percentage Text */
+.progress-bar-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5; /* Assure que le texte est au-dessus de la barre de progression */
+  font-size: 14px; /* Taille de la police */
+  color: #fff; /* Couleur du texte de progression */
+  font-weight: bold; /* Texte en gras */
+}
+
+/* Cancel Icon */
+.progress-bar-cancel {
+  position: absolute;
+  right: 5px; /* Positionne l'icône à l'extrémité droite avec un peu d'espace */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10; /* Assure que le bouton est au-dessus de la barre de progression */
+  cursor: pointer;
+  font-size: 18px; /* Taille de l'icône */
+  color: #6c757d; /* Couleur de l'icône */
+  background: none; /* Pas de fond pour le bouton */
+  border: none; /* Pas de bordure pour le bouton */
+}
+
+.progress-bar-cancel:hover {
+  color: #dc3545; /* Couleur de l'icône en survol */
+}
+
+
+
+
+
+/* Blur Effect */
+.blur {
+  filter: blur(5px);
+  transition: filter 0.3s ease-in-out;
+}
+
+.modal-overlay {
+  backdrop-filter: blur(5px);
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  width: 150px;
+  text-align: center;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+.tooltip h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.tooltip p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.actions-menu {
+  z-index: 10;
+  width: 50px; /* Réduit la largeur du menu d'actions */
+  padding: 4px; /* Réduit le padding pour rendre le menu plus compact */
+  margin-right:-60px;
+  margin-top:-100px
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  width: 20px;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.btn-action i {
+  margin-right: 8px;
+}
+
+.btn-action:hover .tooltip-content {
+  display: block;
+}
+
+.tooltip-content {
+  display: none;
+  position: absolute;
+  top: -60px;
+  right: 50%;
+  width: 150px;
+  background-color: #f9f9f9;
+  color: #333;
+  text-align: left;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  z-index: 20;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-content strong {
+  font-weight: bold;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* Responsive Table */
+@media (max-width: 600px) {
+  table {
+    font-size: 12px; /* Réduit la taille de la police sur petits écrans */
+  }
+
+  th, td {
+    padding: 4px 6px; /* Réduit le padding sur petits écrans */
+  }
+}
+
+
+/* Infobulle personnalisée */
+.custom-tooltip {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  margin-top:20px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100;
+  left: 100%; /* Positionne l'infobulle à gauche de la cellule */
+  transform: translateX(-900px); /* Déplace légèrement vers la gauche */
+  bottom:2;
+}
+
+
+
+.progres-cell{
+  width:120px
+}
+.url-cell:hover .custom-tooltip {
+  display: inline-block;
+}
+/* Ajuster la largeur de la colonne URL */
+.url-cell {
+  max-width: 100px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Infobulle personnalisée pour l'URL */
+.url-cell:hover .url-text {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Ajuste la taille selon tes besoins */
+  height: 40px; /* Ajuste la taille selon tes besoins */
+  border-radius: 50%;
+  border: 2px solid transparent; /* Bordure transparente au départ */
+  background-color: rgba(255, 255, 255, 0); /* Fond transparent */
+  padding: 0; /* Évite l'ajout de padding par défaut */
+  font-size: 18px; /* Ajuste la taille de l'icône */
+  transition: background-color 0.3s, border-color 0.3s; /* Pour les transitions douces */
+}
+
+.icon-button i {
+  color: #000; /* Couleur de l'icône */
+}
+
+.icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Couleur de fond légère au survol */
+  border-color: rgba(0, 0, 0, 0.2); /* Couleur de la bordure au survol */
+}
+
+.icon-button.active {
+  background-color: rgba(0, 0, 0, 0.1); /* Couleur de fond pour l'état actif */
+  border-color: rgba(0, 0, 0, 0.3); /* Couleur de la bordure pour l'état actif */
+}
+
+.product-image {
+  width: 4rem; /* Taille de l'image 16x16 */
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease; /* Effet de transition pour le zoom */
+}
+
+.product-image:hover {
+  transform: scale(10.5); /* Zoom à 1.5 fois la taille */
+}

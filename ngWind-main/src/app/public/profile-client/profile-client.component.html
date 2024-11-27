@@ -1,0 +1,110 @@
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+  <div class="row px-xl-5">
+    <div class="col-12">
+      <nav class="breadcrumb bg-light mb-30">
+        <a class="breadcrumb-item text-dark" href="#">Home</a>
+        <span class="breadcrumb-item active">Profile</span>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Profile Start -->
+<div class="container-fluid">
+  <div class="row gutters">
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="account-settings">
+            <div class="user-profile" *ngIf="!isEditing">
+              <div class="user-avatar">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar">
+              </div>
+              <h5 class="user-name">{{ user.nom }} {{ user.prenom }}</h5>
+              <h6 class="user-email">{{ user.email }}</h6>
+              <p>{{ user.localisation }}</p>
+              <p>{{ user.numTel }}</p>
+              <button class="btn btn-primary w-100" (click)="isEditing = true">Edit Profile</button>
+            </div>
+            <div *ngIf="isEditing" class="user-profile">
+              <div class="user-avatar">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User Avatar">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+      <!-- Edit Profile Form -->
+      <div *ngIf="isEditing" class="card h-100">
+        <div class="card-body">
+          <h6 class="mb-2 text-primary">Personal Details</h6>
+          <form (ngSubmit)="saveProfile()">
+            <div class="row gutters">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="fullName">Full Name</label>
+                  <input type="text" class="form-control" id="fullName" [(ngModel)]="user.nom" placeholder="Enter full name" name="nom" required>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="eMail">Email</label>
+                  <input type="email" class="form-control" id="eMail" [(ngModel)]="user.email" placeholder="Enter email ID" name="email" required>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" class="form-control" id="phone" [(ngModel)]="user.numTel" placeholder="Enter phone number" name="numTel" required>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="location">Location</label>
+                  <input type="text" class="form-control" id="location" [(ngModel)]="user.localisation" placeholder="Enter location" name="location" required>
+                </div>
+              </div>
+            </div>
+            <!-- Add this within the form in the template -->
+<div *ngIf="isLoggedIn() && isRole('FOURNISSEUR') " class="row gutters">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="form-group">
+      <label for="siteWeb">Site Web</label>
+      <input type="text" class="form-control" id="siteWeb" [(ngModel)]="user.siteWeb" placeholder="Enter site web" name="siteWeb">
+    </div>
+  </div>
+</div>
+
+            <div class="row gutters">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" [(ngModel)]="user.password" placeholder="Enter your password" name="password">
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Confirm your password" name="confirmPassword">
+                </div>
+              </div>
+            </div>
+            <div class="row gutters">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="text-right">
+                  <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Profile End -->

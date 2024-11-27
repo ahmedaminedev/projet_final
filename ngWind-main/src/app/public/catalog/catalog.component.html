@@ -1,0 +1,151 @@
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+  <div class="row px-xl-5">
+    <div class="col-12">
+      <nav class="breadcrumb bg-light mb-30">
+        <a class="breadcrumb-item text-dark" href="#">Home</a>
+        <a class="breadcrumb-item text-dark" href="#">Shop</a>
+        <span class="breadcrumb-item active">Shop List</span>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Start -->
+<div class="container-fluid">
+  <div class="row px-xl-5">
+    <!-- Shop Sidebar Start -->
+    <div *ngIf="filteredAttributes" class="col-lg-3 col-md-4">
+      <!-- Price Filter Start -->
+      <div class="bg-light p-4 mb-30">
+        <div class="form-group">
+          <label for="priceRange">Price Range</label>
+          <div class="position-relative slider-container">
+            <input type="range" class="form-range slider-range" [min]="priceRange.min_price"
+              [max]="priceRange.max_price" [value]="selectedMinPrice" (input)="updateMinValue($event)" />
+            <input type="range" class="form-range slider-range" [min]="priceRange.min_price"
+              [max]="priceRange.max_price" [value]="selectedMaxPrice" (input)="updateMaxValue($event)" />
+            <div class="slider-track"
+              [style.left.%]="((selectedMinPrice - priceRange.min_price) / (priceRange.max_price - priceRange.min_price)) * 100"
+              [style.width.%]="((selectedMaxPrice - selectedMinPrice) / (priceRange.max_price - priceRange.min_price)) * 100">
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span>{{ selectedMinPrice | currency }}</span>
+            <span>{{ selectedMaxPrice | currency }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- Price Filter End -->
+
+      <!-- Attribute Filters Start -->
+      <div
+        *ngFor="let attribute of ['processeurs', 'memoires', 'disques', 'cartes_graphiques', 'refs_cartes_graphiques']"
+        class="bg-light p-4 mb-30">
+        <h5 *ngIf="filteredAttributes[attribute]" class="section-title position-relative text-uppercase mb-3">
+          <span class="bg-secondary pr-3">Filter by {{ attribute }}</span>
+        </h5>
+        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"
+          *ngFor="let item of filteredAttributes[attribute]; let i = index; trackBy: trackByFn">
+          <input type="checkbox" class="custom-control-input" [id]="attribute + '-' + i"
+             (change)="toggleAttributeFilter(attribute, item)" />
+          <label class="custom-control-label" [for]="attribute + '-' + i">{{ item }}</label>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Shop Sidebar End -->
+
+    <!-- Shop Product Start -->
+    <div class="col-lg-9 col-md-8">
+      <div class="row pb-3">
+        <div class="col-12 pb-1">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <button class="btn btn-sm btn-light"><i class="bi bi-grid-fill"></i></button>
+              <button class="btn btn-sm btn-light ml-2"><i class="bi bi-list"></i></button>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Affiche le message d'erreur si présent -->
+        <div *ngIf="errorMessage" class="error-message col-12">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Affiche les produits si aucun message d'erreur -->
+        <ng-container *ngIf="!errorMessage">
+          <div *ngFor="let product of paginatedProducts" class="col-lg-4 col-md-6 col-sm-6 pb-1">
+            <div class="product-item bg-light mb-4">
+              <div class="product-img position-relative overflow-hidden">
+                <img class="img-fluid w-100" [src]="product.image" alt="{{ product.nom }}">
+                <div class="product-action">
+                  <a class="btn btn-outline-dark btn-square" *ngIf="isLoggedIn() && isRole('CLIENT') " (click)="addToFavorites(product.id)">
+                    <i class="bi bi-heart-fill" style="font-weight: bold; font-size: 1.5rem;"></i>
+                  </a>
+                  <!-- Change refresh icon to detail icon and add link to product details -->
+                  <a class="btn btn-outline-dark btn-square" [routerLink]="['/products/details', product.id]">
+                    <i class="bi bi-info-circle" style="font-weight: bold; font-size: 1.5rem;"></i>
+                  </a>
+                  <!-- You may want to add a search icon or any other icon -->
+                  <a class="btn btn-outline-dark btn-square" *ngIf="isLoggedIn() && isRole('CLIENT') " href="#">
+                    <i class="bi bi-search" style="font-weight: bold; font-size: 1.5rem;"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="text-center py-4">
+                <a class="h6 text-decoration-none text-truncate" [href]="product.link">{{ product.nom }}</a>
+
+                <!-- Supplier Logo Display -->
+                <div class="product-logo">
+                  <img *ngIf="product.site === 'TechnoPro'" src="assets/images/technopro.png" alt="TechnoPro">
+                  <img *ngIf="product.site === 'Mytek'" src="assets/images/mytek.png" alt="Mytek">
+                  <img *ngIf="product.site === 'tunisianet'" src="assets/images/tunisianet.png" alt="Tunisianet">
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center mt-2">
+                  <h5>{{ product.prix | currency }}</h5>
+                  <h6 class="text-muted ml-2"><del>{{ product.prix_regulier | currency }}</del></h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center mb-1">
+                  <small *ngFor="let star of [].constructor(product.rating)"
+                    class="bi bi-star-fill text-primary mr-1"></small>
+                  <small *ngIf="product.rating < 5" class="bi bi-star text-muted mr-1"></small>
+                  <small>({{ product.rating }})</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Pagination Start -->
+        <div class="col-12">
+          <nav>
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="setPage(currentPage - 1)">Previous</a>
+              </li>
+
+              <li class="page-item" *ngFor="let page of getPagesToShow(); let i = index"
+                [class.active]="page === currentPage" [class.disabled]="page === -1">
+                <a class="page-link" (click)="setPage(page)" *ngIf="page !== -1">{{ page }}</a>
+                <span class="page-link" *ngIf="page === -1">...</span>
+              </li>
+
+              <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+                <a class="page-link" (click)="setPage(currentPage + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- Pagination End -->
+
+      </div>
+    </div>
+    <!-- Shop Product End -->
+  </div>
+</div>
+<!-- Shop End -->

@@ -1,0 +1,80 @@
+<div class="container mx-auto p-6">
+  <h2 class="text-3xl font-extrabold text-gray-800 mb-6">Gestion des Catégories</h2>
+
+  <!-- Bouton Ajouter une Catégorie -->
+  <button (click)="openForm()" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition ease-in-out">
+    <i class="bi bi-plus-circle mr-2"></i> Ajouter une Catégorie
+  </button>
+
+  <!-- Liste des Catégories -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <div *ngFor="let parent of getParentCategories()" class="p-4 bg-white rounded-lg shadow hover:shadow-lg transition duration-300 ease-in-out">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-gray-800">{{ parent.name }}</h3>
+        <div class="flex items-center">
+          <button (click)="toggleSubCategories(parent.id)" class="text-blue-600 hover:text-blue-700 mr-3">
+            <i class="bi bi-list-task"></i>
+          </button>
+          <button (click)="deleteCategory(parent)" class="text-red-600 hover:text-red-700">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sous-catégories -->
+      <div [id]="'sub-categories-' + parent.id" class="pl-4 mt-4 hidden">
+        <ul>
+          <li *ngFor="let sub of getSubCategories(parent.id)" class="flex justify-between items-center text-sm text-gray-600 py-2">
+            {{ sub.name }}
+            <button (click)="deleteCategory(sub)" class="text-red-600 hover:text-red-700">
+              <i class="bi bi-trash"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour ajouter ou modifier une catégorie -->
+  <div *ngIf="isFormVisible" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h5 class="text-2xl font-bold text-gray-800">{{ isEditing ? 'Modifier la Catégorie' : 'Ajouter une Catégorie' }}</h5>
+          <button type="button" class="text-gray-500 hover:text-gray-800" (click)="cancelEdit()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <form (ngSubmit)="submitForm()">
+          <div class="grid grid-cols-1 gap-6">
+            <!-- Champ Nom de la Catégorie -->
+            <div class="form-group">
+              <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+              <input type="text" id="name" [(ngModel)]="categoryData.name" name="name" class="form-control border rounded-lg p-2 w-full focus:ring focus:ring-blue-300" required />
+            </div>
+
+            <!-- Sélection de la Catégorie Parent -->
+            <div class="form-group">
+              <label for="parent_category" class="block text-sm font-medium text-gray-700">Catégorie Parent</label>
+              <select id="parent_category" [(ngModel)]="categoryData.parent_category" name="parent_category" class="form-control border rounded-lg p-2 w-full">
+                <option value="null">Aucune</option>
+                <option *ngFor="let category of getParentCategories()" [value]="category.id">{{ category.name }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Boutons -->
+          <div class="flex justify-end mt-6">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition ease-in-out mr-2">
+              {{ isEditing ? 'Mettre à Jour' : 'Ajouter' }}
+            </button>
+            <button type="button" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition ease-in-out" (click)="cancelEdit()">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

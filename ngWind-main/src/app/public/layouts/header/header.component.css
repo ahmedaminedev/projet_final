@@ -1,0 +1,504 @@
+/* Global container */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+}
+
+
+
+/* Bouton de notification */
+.notification-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notification-btn i {
+  font-size: 21px;
+  color: #f39c12; /* Couleur de la cloche */
+  transition: color 0.3s ease;
+}
+
+
+
+/* Compteur de notifications */
+.notification-count{
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu des notifications */
+.notifications-menu {
+  width: 330px;
+  max-height: 400px;
+  overflow-y: auto;
+  opacity: 0;
+  position: absolute;
+  top: 100%; /* Position plus basse pour éviter l'encombrement */
+  right: 50px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 1000;
+  transform: translateY(-10px); /* Effet de montée */
+}
+
+.notifications-menu.visible {
+  opacity: 1;
+  transform: translateY(0); /* Affiche progressivement le menu */
+}
+
+/* Titre des notifications */
+.notifications-menu h2 {
+  margin: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Item de notification */
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f1f1f1;
+  background-color: #f3f3f3;
+  transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+  background-color: #f0f8ff; /* Légère teinte bleue au survol */
+}
+
+.notification-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.notification-text p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+.notification-date {
+  font-size: 11px;
+  color: #bdc3c7;
+  margin-top: 5px;
+}
+
+/* Aucun élément de notification */
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #bdc3c7;
+  background-color: #f9f9f9;
+}
+
+
+.login-btn {
+  padding: 6px 10px; /* Réduit la taille du padding pour les boutons */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px; /* Réduit la taille de la police des boutons */
+  transition: background-color 0.3s ease;
+  margin: 2px; /* Ajoute un petit espace entre les boutons */
+}
+
+/* Styles pour chaque bouton spécifique */
+.login-btn { background-color: #f39c12; color: white; }
+
+.logo {
+  font-size: 45px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo-primary {
+  color: #f39c12;
+}
+
+.logo-secondary {
+  color: #e74c3c;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width:460px;
+  max-width: 500px;
+  margin-left:100px
+}
+
+.search-form input[type="text"] {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  width: 100%;
+  color:#000000;
+}
+
+.search-form button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #f39c12;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background-color: #e67e22;
+}
+
+.customer-service {
+  margin: 0;
+  font-size: 14px;
+}
+
+.phone-number {
+  margin: 5px 0 0;
+  font-size: 18px;
+  color: #f39c12;
+}
+
+.main-navbar .navbar-left,
+.main-navbar {
+  display: flex;
+  align-items: center;
+}
+
+
+.navbar-center{
+  display: flex;
+  align-items: center;
+  margin-left:-100px
+}
+
+.main-navbar .navbar-right
+{
+  margin-right:20px;
+}
+
+
+
+.nav-link {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+}
+
+.nav-link:hover {
+  color: #f39c12;
+}
+/* Ajuster la hauteur et le padding du bouton des catégories */
+.categories-btn {
+  background-color: #f39c12;
+  color: #fff;
+  border: none;
+  padding: 10px 20px; /* Ajustez le padding pour s'aligner avec la barre de navigation */
+  font-size: 19px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espace entre le texte et l'icône */
+  position: relative;
+  height: 100%; /* Ajuste la hauteur pour qu'elle corresponde à celle de la barre de navigation */
+  box-sizing: border-box; /* Inclut le padding dans la hauteur totale */
+  width:300px;
+  font-weight: bold; /* Appliquer le gras au texte et aux icônes */
+
+}
+
+/* Ajuster la hauteur et le padding de la barre de navigation principale */
+.main-navbar {
+  background-color: #444;
+  color: #fff;
+  margin-bottom: 40px;
+  position: relative;
+  display: flex;
+  align-items: center; /* Aligne les éléments au centre verticalement */
+  height: 60px; /* Définir une hauteur fixe pour la barre de navigation */
+}
+
+/* Assurez-vous que le bouton des catégories a une hauteur égale à celle de la barre de navigation */
+.categories-btn {
+  height: 60px; /* Aligner la hauteur avec celle de la barre de navigation */
+}
+
+
+.icon-left {
+  font-size: 12px; /* Réduction de la taille de l'icône */
+  margin-left: auto; /* Pousse l'icône à l'extrémité droite */
+  padding-left: 0; /* Retrait du padding gauche */
+  font-weight: bold; /* Appliquer le gras au texte et aux icônes */
+
+}
+.icon-right{
+  font-size: 20px; /* Réduction de la taille de l'icône */
+  margin-right: auto; /* Pousse l'icône à l'extrémité droite */
+  padding-right: 0; /* Retrait du padding gauche */
+  margin-left:-12px;
+  margin-right:9px;
+  font-weight: bold; /* Appliquer le gras au texte et aux icônes */
+
+}
+/* Menu des catégories */
+.categories-menu {
+  display: none;
+  position: absolute;
+  top: calc(75% + 0px); /* Juste en dessous du bouton */
+  left: 4; /* Aligné avec le bord gauche du bouton */
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 300px; /* Largeur du menu des catégories */
+}
+
+.categories-menu.visible {
+  display: block;
+}
+
+.categories-menu > div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between; /* Espace entre le texte et l'icône */
+  align-items: center;
+}
+
+.categories-menu > div:hover {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+/* Menu des sous-catégories */
+.subcategories-menu {
+  display: none;
+  position: absolute;
+  top: 0; /* Aligné avec le haut de l'élément catégorie */
+  left: 100%; /* Positionné à droite de l'élément catégorie */
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Largeur fixe du menu des sous-catégories */
+}
+
+.subcategories-menu.visible {
+  display: block;
+}
+
+.subcategories-menu > div {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between; /* Espace entre le texte et l'icône */
+  align-items: center;
+}
+
+.subcategories-menu > div:hover {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+
+/* Navbar Buttons */
+.notification-btn,
+.favorites-btn,
+.profile-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 25px;
+  cursor: pointer;
+  margin-left: 10px;
+  color:#f39c12;
+}
+
+.notification-btn:hover,
+.favorites-btn:hover,
+.profile-btn:hover {
+  color: #f39c12;
+
+}
+
+/* Bouton des favoris */
+.favorites-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px; /* Ajuster l'espacement si nécessaire */
+}
+
+.favorites-btn i {
+  font-size: 20px;
+  color: #f39c12; /* Couleur de l'icône de cœur */
+  transition: color 0.3s ease;
+}
+
+/* Compteur de favoris */
+.favorites-count {
+  position: absolute;
+  top: -4px; /* Ajustez cette valeur pour mieux aligner le compteur */
+  right: -4px; /* Ajustez cette valeur pour mieux aligner le compteur */
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu profil */
+.profile-menu {
+  display: none;
+  position: absolute;
+  top: calc(60% + 4px); /* Positionner juste en dessous de l'icône */
+  right: 0;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 150px;
+  margin-right:125px;
+}
+
+.profile-menu.visible {
+  display: block;
+}
+
+.profile-menu > div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+
+.profile-menu > div:hover {
+  background-color: #f39c12;
+  color: #fff;
+}
+/* Réduire la taille de l'icône de profil */
+.profile-btn i.bi-caret-down-fill {
+  font-size: 16px; /* Taille réduite pour l'icône de profil */
+}
+/* Media Queries */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-left,
+  .navbar-center,
+  .navbar-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+  }
+
+  .navbar-center {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-center.collapse {
+    display: flex;
+  }
+
+
+  .categories-btn {
+    display:none;
+    width: 100%;
+  }
+
+  .categories-menu {
+    width: 100%;
+    left: 0;
+    top: calc(100% + 4px); /* Ensure menu is still below the button */
+  }
+
+  .notification-btn,
+  .favorites-btn,
+  .profile-btn {
+
+    display: none; /* Align buttons side by side */
+
+  }
+
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 25px;
+  }
+
+  .search-form {
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
+  .phone-number {
+    font-size: 16px;
+  }
+}

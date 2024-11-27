@@ -1,0 +1,198 @@
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+  <div class="row px-xl-5">
+    <div class="col-12">
+      <nav class="breadcrumb bg-light mb-30">
+        <a class="breadcrumb-item text-dark" href="#">Home</a>
+        <a class="breadcrumb-item text-dark" href="#">Shop</a>
+        <span class="breadcrumb-item active">Shop Detail</span>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Magic Search Section Start -->
+<div class="container-fluid text-center mb-5">
+  <h2 class="section-title text-uppercase mx-xl-5 mb-4">
+    <span class="bg-secondary pr-3">L'outil magique, recherche avec un lien</span>
+  </h2>
+  <p>
+    L'outil indispensable avant de passer vos commandes sur le web ! <br>
+    Copier et coller le lien d'un produit dans le site de l'un de nos partenaires ci-dessous, nous cherchons un meilleur prix pour vous ! <br>
+    Pour ajouter l'outil en favoris, appuyez simultanément sur <strong>Crtl+D</strong>.
+  </p>
+
+  <div class="d-flex justify-content-center mt-4">
+    <input type="text" class="form-control w-50" [(ngModel)]="productLink" placeholder="Collez le lien du produit ici" />
+    <button class="btn btn-primary ml-3" (click)="searchProductByLink()">Rechercher</button>
+  </div>
+</div>
+<!-- Magic Search Section End -->
+<!-- Section d'affichage des résultats -->
+<div *ngIf="isSearching" class="text-center">
+  <p>Recherche en cours...</p>
+</div>
+
+<div *ngIf="!isSearching && !productFound" class="text-center">
+  <p>Aucun produit trouvé pour ce lien. Veuillez essayer un autre lien.</p>
+</div>
+
+<!-- Shop Detail Start -->
+<div *ngIf="productFound" class="container-fluid pb-5">
+  <div class="row px-xl-5">
+    <div class="col-lg-5 mb-30">
+      <div id="product-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner bg-light">
+          <div class="carousel-item active">
+            <img class="w-100 h-100" [src]="product.image" loading="lazy" alt="{{ product.nom }}">
+
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+          <i class="fa fa-2x fa-angle-left text-dark"></i>
+        </a>
+        <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+          <i class="fa fa-2x fa-angle-right text-dark"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-7 h-auto mb-30">
+      <div class="h-100 bg-light p-30">
+        <h3>{{ product.nom }}</h3>
+        <div class="d-flex mb-3">
+          <div class="text-primary mr-2">
+            <small *ngFor="let star of (product.stars || [])" class="bi bi-star-fill"></small>
+            <small *ngIf="product.halfStar" class="bi bi-star-half"></small>
+            <small *ngIf="!(product.halfStar || (product.stars && product.stars.length === 5))" class="bi bi-star"></small>
+          </div>
+        </div>
+
+        <div *ngIf="product.prix_regulier && product.prix_regulier !== product.prix" class="mb-4">
+          <h4 class="font-weight-semi-bold text-muted mb-2" style="text-decoration: line-through;">
+            {{ product.prix_regulier | currency }}
+          </h4>
+        </div>
+        <h2 class="font-weight-semi-bold mb-4">{{ product.prix | currency }}</h2>
+
+        <!-- Afficher le prix régulier seulement s'il est défini et différent du prix actuel -->
+
+
+        <p class="mb-4">{{ product.description }}</p>
+
+        <div class="d-flex align-items-center mb-4 pt-2">
+          <button class="btn btn-primary px-3" *ngIf="isLoggedIn() && isRole('CLIENT')" (click)="addToFavorites(product.id)"><i class="bi bi-heart-fill mr-1"></i> Add To Favoris</button>
+          <!-- Assurez-vous que `product.link` est défini dans votre composant -->
+          <button class="btn btn-primary px-3" *ngIf="isLoggedIn() && (isRole('CLIENT') || isRole('FOURNISSEUR'))" style="margin-left:10px;" (click)="incrementVisitorsAndRedirect()">
+            <i class="bi bi-cart-fill mr-1"></i> Buy
+          </button>
+        </div>
+        <div class="d-flex pt-2">
+          <strong class="text-dark mr-2">Share on:</strong>
+          <div class="d-inline-flex">
+            <a class="text-dark px-2" href="#">
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a class="text-dark px-2" href="#">
+              <i class="bi bi-twitter"></i>
+            </a>
+            <a class="text-dark px-2" href="#">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a class="text-dark px-2" href="#">
+              <i class="bi bi-pinterest"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="row px-xl-5">
+    <div class="col">
+      <div class="bg-light p-30">
+        <div class="nav nav-tabs mb-4">
+          <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
+          <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">Information</a>
+          <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Historique</a>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="tab-pane-1">
+            <h4 class="mb-3">Product Description</h4>
+            <p>{{ product.description }}</p>
+          </div>
+          <div class="tab-pane fade" id="tab-pane-2">
+            <h4 class="mb-3">Additional Information</h4>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Propriété</th>
+                  <th>Détails</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let info of infos">
+                  <td>{{ info.key }}</td>
+                  <td>{{ info.value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="tab-pane-3">
+            <h4 class="mb-3">Historique des Prix</h4>
+            <canvas id="priceChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Shop Detail End -->
+<!-- Products Start -->
+<div *ngIf="productFound" class="container-fluid pt-5 pb-3">
+  <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+    <span class="bg-secondary pr-3">Similar Products</span>
+  </h2>
+
+  <owl-carousel-o  [options]="customOptions">
+    <ng-container *ngFor="let product of products">
+      <ng-template carouselSlide>
+        <div class="product-item bg-light mb-4">
+          <div class="product-img position-relative overflow-hidden">
+            <img class="img-fluid w-100" [src]="product.image" loading="lazy" alt="{{ product.nom }}">
+            <div class="product-action">
+              <a class="btn btn-outline-dark btn-square" *ngIf="isLoggedIn() && isRole('CLIENT') " (click)="addToFavorites(product.id)">
+                <i class="bi bi-heart-fill" style="font-weight: bold; font-size: 1.5rem;"></i>
+              </a>
+              <!-- Change refresh icon to detail icon and add link to product details -->
+              <a class="btn btn-outline-dark btn-square" [routerLink]="['/products/details', product.id]">
+                <i class="bi bi-info-circle" style="font-weight: bold; font-size: 1.5rem;"></i>
+              </a>
+              <!-- You may want to add a search icon or any other icon -->
+              <a class="btn btn-outline-dark btn-square" *ngIf="isLoggedIn() && isRole('CLIENT') " href="#">
+                <i class="bi bi-search" style="font-weight: bold; font-size: 1.5rem;"></i>
+              </a>
+            </div>
+          </div>
+          <div class="text-center py-4">
+            <a class="h6 text-decoration-none text-truncate" href="#">{{ product.nom }}</a>
+            <div class="product-logo">
+              <img *ngIf="product.site === 'TechnoPro'" src="assets/images/technopro.png" alt="TechnoPro">
+              <img *ngIf="product.site === 'Mytek'" src="assets/images/mytek.png" alt="Mytek">
+              <img *ngIf="product.site === 'tunisianet'" src="assets/images/tunisianet.png" alt="Tunisianet">
+            </div>
+            <div class="d-flex align-items-center justify-content-center mt-2">
+              <h5>{{ product.prix | currency }}</h5>
+              <h6 class="text-muted ml-2"><del>{{ product.prix_regulier | currency }}</del></h6>
+            </div>
+
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+  </owl-carousel-o>
+</div>
+<!-- Products End -->
+

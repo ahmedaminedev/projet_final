@@ -1,0 +1,125 @@
+<aside>
+    <div class="brand-wrapper">
+        <a href="#" class="brand text-center">
+            <h1 class="flex items-center font-bold text-slate-300">
+              <span class="text-2xl mr-2" style="background-color: rgb(231, 76, 60); width: 2rem; height: 2rem; border-radius: 0.375rem;">B</span>
+              <span class="text-3xl tracking-widest">Plan</span>
+            </h1>
+        </a>
+    </div>
+    <ul class="menu-links">
+        <li>
+            <a [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Dashboard)"
+                routerLinkActive="active" class="menu-item" ariaCurrentWhenActive="page">
+                <i class="bi bi-columns-gap"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+
+        <li  *ngIf="isLoggedIn() && ( isRole('ADMIN') || isRole('SCRAPPER'))">
+          <a  *ngIf="isLoggedIn() && ( isRole('ADMIN') || isRole('SCRAPPER'))" href="javascript:void(0)" class="menu-item sub-menu" aria-expanded="false"
+              (click)="subMenuToggleHandler($event)">
+              <i class="bi bi-people"></i>
+              <span>Gestion Users</span>
+          </a>
+          <ul class="sub-menu-item">
+              <li *ngIf="isLoggedIn() && ( isRole('ADMIN') || isRole('SCRAPPER'))">
+                <a class="menu-item"
+                [routerLink]="getNavigationRoute()"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page">
+               <span>Gestion Fournisseur</span>
+             </a>
+
+              </li>
+              <li *ngIf="isLoggedIn() &&  isRole('ADMIN') ">
+                  <a class="menu-item"
+                      [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Settings, settingRoutes.GestionScrapers)"
+                      routerLinkActive="active" ariaCurrentWhenActive="page">
+                      <span>Gestion Scrapers</span>
+                  </a>
+              </li>
+
+          </ul>
+      </li>
+
+
+
+
+      <li>
+        <a href="javascript:void(0)" class="menu-item sub-menu" aria-expanded="false"
+            (click)="subMenuToggleHandler($event)">
+            <i class="bi bi-people"></i>
+            <span>Scraping</span>
+        </a>
+        <ul class="sub-menu-item">
+            <li>
+                <a class="menu-item"
+                    [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Settings, settingRoutes.GestionPages)"
+                    routerLinkActive="active" ariaCurrentWhenActive="page">
+                    <span>Gestion Pages</span>
+                </a>
+            </li>
+            <li>
+              <a class="menu-item" *ngIf="isLoggedIn() && isRole('ADMIN')"
+                  [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Settings, settingRoutes.GestionCategories)"
+                  routerLinkActive="active" ariaCurrentWhenActive="page">
+                  <span>Gestion Categories</span>
+              </a>
+          </li>
+        </ul>
+    </li>
+
+
+
+
+    <li>
+      <a href="javascript:void(0)" class="menu-item sub-menu" aria-expanded="false"
+          (click)="subMenuToggleHandler($event)">
+          <i class="bi bi-people"></i>
+          <span>Reclamations</span>
+      </a>
+      <ul class="sub-menu-item">
+          <li>
+              <a class="menu-item"
+                  [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Settings, settingRoutes.GestionReclamations)"
+                  routerLinkActive="active" ariaCurrentWhenActive="page">
+                  <span>Gestion Reclamations</span>
+              </a>
+          </li>
+
+      </ul>
+  </li>
+
+
+
+        <li>
+            <a href="javascript:void(0)" class="menu-item sub-menu" aria-expanded="false"
+                (click)="subMenuToggleHandler($event)">
+                <i class="bi bi-sliders2-vertical"></i>
+                <span>Settings</span>
+            </a>
+            <ul class="sub-menu-item">
+
+                <li>
+                    <a href="#" class="menu-item" ariaCurrentWhenActive="page">
+                        <span>Website</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</aside>
+
+<div class="collapsible-btn-container">
+    <button id="sidebar-collapse-btn" sidebarCollapse>
+        <div class="w-6 h-16 flex justify-center items-center">
+            <div class="collapsible-icons">
+                <div class="collapsible-top-icon"></div>
+                <div class="collapsible-bottom-icon"></div>
+            </div>
+        </div>
+    </button>
+</div>

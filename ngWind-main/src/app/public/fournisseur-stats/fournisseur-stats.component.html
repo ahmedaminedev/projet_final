@@ -1,0 +1,17 @@
+<div class="dashboard-container">
+  <h3>Total Favorites by Product in Category</h3>
+  <div class="chart-card" *ngFor="let category of categories">
+    <h4>{{ category }}</h4>
+    <div class="chart-wrapper">
+      <canvas id="favoritesChartCanvas-{{ category }}"></canvas>
+    </div>
+  </div>
+
+  <h3>Total Visitors by Product in Category</h3>
+  <div class="chart-card" *ngFor="let category of categories">
+    <h4>{{ category }}</h4>
+    <div class="chart-wrapper">
+      <canvas id="visitorsChartCanvas-{{ category }}"></canvas>
+    </div>
+  </div>
+</div>

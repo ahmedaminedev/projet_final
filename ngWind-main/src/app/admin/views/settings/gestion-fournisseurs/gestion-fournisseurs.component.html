@@ -1,0 +1,68 @@
+<div [@pageTransition]>
+  <h2 class="text-2xl font-bold mb-4">Gestion Fournisseurs</h2>
+  <button (click)="openForm()" class="btn btn-primary mb-4">Add Supplier</button>
+
+  <data-table
+    [columnData]="columnData"
+    [rowData]="rowData"
+    [pageData]="pageData"
+    [actions]="actions">
+  </data-table>
+
+  <!-- Supplier Form Modal -->
+  <div *ngIf="isFormVisible" class="modal" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isEditing ? 'Edit Supplier' : 'Add Supplier' }}</h5>
+          <button type="button" class="close" (click)="cancelEdit()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="submitForm()">
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Display Username only when adding a new supplier -->
+              <div *ngIf="!isEditing" class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" [(ngModel)]="supplierData.username" name="username" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" id="prenom" [(ngModel)]="supplierData.prenom" name="prenom" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" id="nom" [(ngModel)]="supplierData.nom" name="nom" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" [(ngModel)]="supplierData.email" name="email" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" id="password" [(ngModel)]="supplierData.password" name="password" class="form-control" [required]="!isEditing" />
+              </div>
+              <div class="form-group">
+                <label for="numTel" class="form-label">Numéro de Téléphone</label>
+                <input type="text" id="numTel" [(ngModel)]="supplierData.numTel" name="numTel" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="localisation" class="form-label">Localisation</label>
+                <input type="text" id="localisation" [(ngModel)]="supplierData.localisation" name="localisation" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="siteweb" class="form-label">Site Web</label>
+                <input type="text" id="siteweb" [(ngModel)]="supplierData.siteweb" name="siteweb" class="form-control" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Add' }}</button>
+              <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

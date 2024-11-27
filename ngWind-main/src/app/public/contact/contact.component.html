@@ -1,0 +1,40 @@
+<form [formGroup]="claimForm" (ngSubmit)="submitClaim()" class="p-4 border rounded shadow-sm">
+  <div class="form-group">
+    <label for="title">Titre</label>
+    <input
+      id="title"
+      formControlName="title"
+      placeholder="Titre"
+      class="form-control"
+      [ngClass]="{'is-invalid': claimForm.get('title')?.invalid && claimForm.get('title')?.touched}"
+    />
+    <div *ngIf="claimForm.get('title')?.invalid && claimForm.get('title')?.touched" class="invalid-feedback">
+      Le titre est requis.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      placeholder="Description"
+      class="form-control"
+      rows="3"
+      [ngClass]="{'is-invalid': claimForm.get('description')?.invalid && claimForm.get('description')?.touched}"
+    ></textarea>
+    <div *ngIf="claimForm.get('description')?.invalid && claimForm.get('description')?.touched" class="invalid-feedback">
+      La description est requise.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Image</label>
+    <input id="image" type="file" class="form-control-file" (change)="onFileChange($event)" />
+    <div *ngIf="imageUrl" class="mt-2">
+      <img [src]="imageUrl" alt="Aperçu de l'image" class="img-thumbnail" style="max-width: 200px;" />
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="claimForm.invalid || !selectedImage">Soumettre</button>
+</form>

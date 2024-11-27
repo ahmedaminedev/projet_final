@@ -1,0 +1,94 @@
+<section class="home show">
+  <div class="form_container">
+    <div class="form_content">
+      <div class="form signup_form">
+        <form (ngSubmit)="onRegister()">
+          <h2>Signup</h2>
+          <div class="grid_container">
+            <!-- Nom -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-user"></i>
+                <input type="text" [(ngModel)]="user.nom" placeholder="Enter your name" name="nom" required />
+              </div>
+            </div>
+
+            <!-- Prénom -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-user"></i>
+                <input type="text" [(ngModel)]="user.prenom" placeholder="Enter your firstname" name="prenom" required />
+              </div>
+            </div>
+            <!-- Prénom -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-user"></i>
+                <input type="text" [(ngModel)]="user.username" placeholder="Enter your username" name="username" required />
+              </div>
+            </div>
+            <!-- Email -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-envelope"></i>
+                <input type="email" [(ngModel)]="user.email" placeholder="Enter your email" name="email" required />
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-lock"></i>
+                <input type="password" [(ngModel)]="user.password" placeholder="Enter your password" name="password" required />
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-map-marker"></i>
+                <input type="text" [(ngModel)]="user.localisation" placeholder="Enter your location" name="location" required />
+              </div>
+            </div>
+
+            <!-- Numero -->
+            <div class="grid_item">
+              <div class="input_box">
+                <i class="uil uil-book"></i>
+                <input type="text" [(ngModel)]="user.numTel" placeholder="Enter your numero" name="numero" required />
+              </div>
+            </div>
+
+            <!-- Role -->
+            <div class="grid_item">
+              <div class="input_box">
+                <select id="roleSelect" [(ngModel)]="user.role" (change)="toggleSiteWeb()" name="role" required>
+                  <option value="CLIENT">CLIENT</option>
+                  <option value="FOURNISSEUR">FOURNISSEUR</option>
+                </select>
+                <i class="uil uil-user"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Site Web -->
+          <div id="sitewebBox" class="input_box" *ngIf="user.role === 'FOURNISSEUR'">
+            <i class="uil uil-globe"></i>
+            <input type="text" [(ngModel)]="user.siteweb" placeholder="Enter your website" name="siteweb" />
+          </div>
+
+          <!-- Submit Button -->
+          <button class="button" type="submit">Signup Now</button>
+
+          <!-- Login Link -->
+          <div class="login_signup">
+            Already have an account? <a routerLink="/login">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="form_image">
+      <img src="assets/images/e-com.png" alt="Company Logo">
+    </div>
+  </div>
+</section>

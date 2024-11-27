@@ -1,0 +1,27 @@
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.chart-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px; /* Adjust height as needed */
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
